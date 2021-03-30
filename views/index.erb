@@ -1,7 +1,14 @@
-<h3>Welcome to Sinatra!</h3>
-<form action="/submit" method="POST">
-	<input type="text" name="user[name]" value="Enter User Name" />
-	<input type="submit" value="Submit" />
+<h1>Welcome to Rock Paper Scissors Game</h1>
+<h3 class='mt-5'>Please enter your name below.</h3>
+<form action='/game' method='post' class='mt-3'>
+  <label>
+    <div class='d-flex justify-content-center'>
+      <section class='form-group'>
+        <input type='text' name='player_name' placeholder='Enter your name' class='form-control rounded-0' autofocus />
+      </section>
+      <section class='form-group'>
+        <input type='submit' value='Enter' class='btn btn-primary rounded-0' />
+      </section>
+    </div>
+  </label>
 </form>
-
-<a href='/users'>All Users</a>

@@ -1,0 +1,29 @@
+<h1 class='mb-3'>Hooray!<h1>
+
+<h4> Computer: <%= computer_choices %> </h4>
+<h6 class='my-4'> Remaining rounds: <%= player_rounds %> </h6>
+<h4> <%= player_name %>: <%= gamer_choices %> </h4>
+
+<% if results_ready == false %>
+  <div class='d-flex justify-content-center mt-3'>
+    <h1 class='rock'>
+      <a href='/game/throw/rock'>
+        <button class='btn btn-secondary rounded-0' type='button'>Rock</button>
+      </a>
+    </h1>
+    <h1 class='paper'>
+      <a href='/game/throw/paper'>
+        <button class='btn btn-secondary rounded-0' type='button'>Paper</button>
+      </a>
+    </h1>
+    <h1 class='scissors'>
+      <a href='/game/throw/scissors'>
+        <button class='btn btn-secondary rounded-0' type='button'>Scissors</button>
+      </a>
+    </h1>
+  </div>
+<% else %>
+  <a href='/game/<%= player_name %>/result'>
+    <button class='btn btn-secondary rounded-0 mt-3' type='button'>See result</button>
+  </a>
+<% end %>

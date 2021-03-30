@@ -22,8 +22,12 @@ class ApplicationController < Sinatra::Base
     erb :players
   end
 
+  get '/player/:id' do
+    session[:player_id] = params[:id]
+    erb :stage
+  end
+
   get '/game' do
-    @player = Player.find_by(id: session[:player_id])
     erb :stage
   end
 
@@ -33,24 +37,24 @@ class ApplicationController < Sinatra::Base
       session[:player_id] = @player.id
       erb :stage
     else
-      "Sorry, there was an error!"
+      erb :error
     end
   end
 
   post '/game/throw' do
     session['results'] = []
-    @player = Player.find_by(id: session[:player_id])
+    set_player
     result = @player.results.build(params[:result])
     if result.save
       set_number_of_rounds(result.round)
       erb :game
     else
-      "Sorry, there was an error!"
+      erb :error
     end
   end
 
   get '/game/throw/:gamer_choices' do
-    @player = Player.find_by(id: session[:player_id])
+    set_player
     calculate_rounds
     choices = ['rock', 'paper', 'scissors']
     computer_choices = rand(choices.length)
@@ -86,15 +90,24 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/game/:player_name/result' do
-    player = Player.find_by(id: session[:player_id])
-    player.results.last.update(win_record: session['results'].count('win'),
+    set_player
+    @player.results.last.update(win_record: session['results'].count('win'),
                               lose_record: session['results'].count('lose'),
                               tied_record: session['results'].count('tied')
                               )
     erb :result
   end
 
+  get '/ranking' do
+    @top_ten_results = Result.all.order('win_record DESC, created_at DESC')
+    erb :ranking
+  end
+
   private
+    def set_player
+      @player = Player.find_by(id: session[:player_id])
+    end
+
     def set_number_of_rounds(rounds)
       rounds ? session['player_rounds'] = rounds : session['player_rounds'] = session['player_rounds']
     end

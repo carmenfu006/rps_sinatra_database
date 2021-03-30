@@ -13,20 +13,44 @@ class ApplicationController < Sinatra::Base
     erb :index
   end
 
-  [:get, :post].each do |verb|
-    send verb, '/game' do
-      set_player_name
+  get '/new-player' do
+    erb :new
+  end
+
+  get '/all-players' do
+    @players = Player.all
+    erb :players
+  end
+
+  get '/game' do
+    @player = Player.find_by(id: session[:player_id])
+    erb :stage
+  end
+
+  post '/game' do
+    @player = Player.new(params[:player])
+    if @player.save
+      session[:player_id] = @player.id
       erb :stage
+    else
+      "Sorry, there was an error!"
     end
   end
 
   post '/game/throw' do
     session['results'] = []
-    set_number_of_rounds
-    erb :game
+    @player = Player.find_by(id: session[:player_id])
+    result = @player.results.build(params[:result])
+    if result.save
+      set_number_of_rounds(result.round)
+      erb :game
+    else
+      "Sorry, there was an error!"
+    end
   end
 
   get '/game/throw/:gamer_choices' do
+    @player = Player.find_by(id: session[:player_id])
     calculate_rounds
     choices = ['rock', 'paper', 'scissors']
     computer_choices = rand(choices.length)
@@ -35,9 +59,7 @@ class ApplicationController < Sinatra::Base
 
     if session['player_rounds'] >= 0
       session['results_ready'] = false
-      if session['player_rounds'] == 0
-        session['results_ready'] = true
-      end
+      session['results_ready'] = true if session['player_rounds'] == 0
       if params[:gamer_choices] == 'rock' && choices[computer_choices] == 'paper'
         store_results('lose')
         erb :lose
@@ -64,16 +86,17 @@ class ApplicationController < Sinatra::Base
   end
 
   get '/game/:player_name/result' do
+    player = Player.find_by(id: session[:player_id])
+    player.results.last.update(win_record: session['results'].count('win'),
+                              lose_record: session['results'].count('lose'),
+                              tied_record: session['results'].count('tied')
+                              )
     erb :result
   end
 
   private
-    def set_player_name
-      params[:player_name] ? session['player_name'] = params[:player_name] : session['player_name'] = session['player_name']
-    end
-
-    def set_number_of_rounds
-      params[:stage] ? session['player_rounds'] = params[:stage] : session['player_rounds'] = session['player_rounds']
+    def set_number_of_rounds(rounds)
+      rounds ? session['player_rounds'] = rounds : session['player_rounds'] = session['player_rounds']
     end
 
     def calculate_rounds

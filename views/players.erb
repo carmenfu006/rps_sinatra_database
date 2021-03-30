@@ -1,0 +1,8 @@
+<h3>All Players</h3>
+<ul>
+<% @players.order(:name).each do |player| %>
+  <li>
+	<%= player.name %>
+  </li>
+<% end %>
+</ul>

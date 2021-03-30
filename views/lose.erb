@@ -2,7 +2,7 @@
 
 <h4> Computer: <%= computer_choices %> </h4>
 <h6 class='my-4'> Remaining rounds: <%= player_rounds %> </h6>
-<h4> <%= player_name %>: <%= gamer_choices %> </h4>
+<h4> <%= @player.name %>: <%= gamer_choices %> </h4>
 
 <% if results_ready == false %>
   <div class='d-flex justify-content-center mt-3'>
@@ -23,7 +23,7 @@
     </h1>
   </div>
 <% else %>
-  <a href='/game/<%= player_name %>/result'>
+  <a href='/game/<%= @player.name %>/result'>
     <button class='btn btn-secondary rounded-0 mt-3' type='button'>See result</button>
   </a>
 <% end %>

@@ -5,7 +5,8 @@ require 'sinatra/reloader'
 require 'byebug'
 require 'sinatra/activerecord'
 require './config/environments' #database configuration
-require './models/user'
+require './models/player'
+require './models/result'
 
 require File.expand_path(File.join('helpers', 'application_helper'))
 require File.expand_path(File.join('controllers', 'application_controller'))

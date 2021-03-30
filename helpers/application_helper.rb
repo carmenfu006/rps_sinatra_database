@@ -7,10 +7,6 @@ module ApplicationHelper
     session['computer_choices']
   end
 
-  def player_name
-    session['player_name']
-  end
-
   def player_rounds
     session['player_rounds']
   end

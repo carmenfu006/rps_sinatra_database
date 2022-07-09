@@ -1,10 +1,12 @@
 source 'https://rubygems.org'
 
-ruby '2.7.0'
+ruby '3.1.2'
 
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem 'byebug'
-gem 'activerecord'
-gem 'sinatra-activerecord'
+gem 'activerecord', '~> 7.0'
+gem 'sinatra-activerecord', '~> 2.0.25'
 gem 'pg'
+gem 'puma'
+gem 'rake'

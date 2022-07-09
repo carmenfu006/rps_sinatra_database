@@ -10,16 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 202103300000002) do
-
+ActiveRecord::Schema[7.0].define(version: 202103300000002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "players", force: :cascade do |t|
     t.string "name"
     t.integer "age"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "results", force: :cascade do |t|
@@ -28,8 +27,8 @@ ActiveRecord::Schema.define(version: 202103300000002) do
     t.integer "win_record"
     t.integer "lose_record"
     t.integer "tied_record"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["player_id"], name: "index_results_on_player_id"
   end
 
